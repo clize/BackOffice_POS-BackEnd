@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ComCodeRepository extends JpaRepository<MtComCode, String> {
 
-    @Query("SELECT p FROM MtComCode p where p.largcd = '00000' ORDER BY p.medcd DESC")
+    @Query("SELECT p FROM MtComCode p ORDER BY p.medcd DESC")
     List<MtComCode> findAllDesc();
+
+    List<MtComCode> findByLargcd(String largcd);
 
 }

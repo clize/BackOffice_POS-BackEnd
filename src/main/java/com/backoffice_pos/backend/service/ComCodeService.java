@@ -34,4 +34,13 @@ public class ComCodeService {
         return new ComCodeResponseDto(entity);
     }
 
+    @Transactional
+    public List<ComCodeListResponseDto> findByLargcd(String largcd) {
+        return comCodeRepository.findByLargcd(largcd).stream()
+                .map(ComCodeListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+
 }

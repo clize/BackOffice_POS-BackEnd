@@ -4,6 +4,8 @@ import com.backoffice_pos.backend.service.PostsService;
 import com.backoffice_pos.backend.web.dto.Posts.PostsListResponseDto;
 import com.backoffice_pos.backend.web.dto.Posts.PostsResponseDto;
 
+import com.backoffice_pos.backend.web.dto.Posts.PostsSaveRequestDto;
+import com.backoffice_pos.backend.web.dto.Posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -30,25 +32,36 @@ public class PostsApiController {
         return new ResponseEntity<List<PostsListResponseDto>>(postsResponseDtoList, HttpStatus.OK);
     }
 
-//    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<PostsResponseDto> findById(@PathVariable("Id" Long Id)) {
-//        PostsResponseDto postsResponseDto
-//    }
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<PostsResponseDto> findById(@PathVariable("id") Long Id) {
+        PostsResponseDto postsResponseDto = postsService.findById(Id);
 
-//    @GetMapping("/list")
-//    public List<PostsListResponseDto> findAll(){
-//        return postsService.findAllDesc();
-//    }
+        return new ResponseEntity<PostsResponseDto>(postsResponseDto, HttpStatus.OK);
+    }
 
-//    @PostMapping("/api/v1/posts")
-//    public Long save(@RequestBody PostsSaveRequestDto requestDto){
-//        return postsService.save(requestDto);
-//    }
+    /** 게시글 - 수정 */
+    @PutMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Long> update(@PathVariable("id") Long Id, @RequestBody PostsUpdateRequestDto postsUpdateRequestDto) {
 
-//    @GetMapping("/api/v1/posts/{id}")
-//    public PostsResponseDto findById(@PathVariable Long id) {
-//        return postsService.findById(id);
-//    }
+        Long updatepostsSeq = postsService.update(Id, postsUpdateRequestDto);
+
+        return new ResponseEntity<Long>(updatepostsSeq, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value ="/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Long> delete(@PathVariable("id") Long postsSeq) {
+        postsService.delete(postsSeq);
+
+        return new ResponseEntity<Long>(postsSeq, HttpStatus.NO_CONTENT);
+    }
+
+    /** 게시글 - 등록 */
+    @PostMapping(value = "", produces =  {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Long> save(@RequestBody PostsSaveRequestDto postsSaveRequestDto) {
+        Long savePostsSeq = postsService.save(postsSaveRequestDto);
+
+        return new ResponseEntity<Long>(savePostsSeq, HttpStatus.CREATED);
+    }
 
 
 
